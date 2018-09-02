@@ -5,13 +5,19 @@ from clint.textui import progress
 from scrapy.loader import ItemLoader
 from allitebooks.items import AllitebooksItem
 import logging
+from scrapy.spiders import CrawlSpider, Rule
+from scrapy.linkextractors import LinkExtractor
+
+#from spiders.items import AllitebooksItem.
 
 logger = logging.getLogger('allitebookslogger')
 
 class BookspiderSpider(scrapy.Spider):
     name = 'getbooks'
     allowed_domains = ['www.allitebooks.com']
-
+    rule = (
+        Rule(LinkExtractor(allow=r'Items/'), callback='parse_item',follow=True),
+            )
     # start_urls = ['http://www.allitebooks.com']
     def start_requests(self):
         urls = ['http://www.allitebooks.com/']
@@ -20,6 +26,10 @@ class BookspiderSpider(scrapy.Spider):
             urls.append(f'http://www.allitebooks.com/page/{i}/')
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse)
+
+    def parse_item(self, response):
+        i = AllitebooksItem
+        return i
 
     def parse(self, response):
 

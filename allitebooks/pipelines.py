@@ -24,14 +24,13 @@ class MongoDBPipleline(object):
         db = connection[settings['MONGODB_DB']]
         self.connecton = db[settings['MONGODB_COLLECTION']]
     def process_item(self, item, spider):
-        vaild = True
+
         for data in item:
             if not data:
-                vaild = False
-                raise DropItem("Missing {0}".format(data))
-        if vaild:
-            self.collection.insert(dict(item))
-            log.msg("Book Added to MongoDB Database", level=log.DEBUG, spider=spider)
+                raise DropItem("Missing Data")
+        self.collection.update({'url':item['url']},dict(item), upsert=True)
+        log.msg("Book Added to MongoDB Database", level=log.DEBUG, spider=spider)
+        return item
 
 class AlliteebooksJsonPipeline(object):
     def open_spider(self, spider):
