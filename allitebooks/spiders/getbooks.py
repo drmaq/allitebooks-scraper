@@ -50,7 +50,7 @@ class BookspiderSpider(scrapy.Spider):
         thumbnail_url = metadata_entry.css('.entry-body-thumbnail a img::attr(src)').extract_first()
         book_detail = metadata_entry.css('.book-detail')
         footer = response.css('footer.entry-footer')
-        download_link = footer.css('.download-links a::attr(href)').extract_first().replace(" ", "%20")
+        download_link = footer.css('.download-links a::attr(href)').extract_first().replace("-", "'s").replace(" ", "%20")
         print("link", download_link)
 
         loader.add_value('title', title)
