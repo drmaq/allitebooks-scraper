@@ -9,10 +9,29 @@ from scrapy.exporters import JsonLinesItemExporter
 import json
 import pymongo
 from scrapy import log
+from scrapy.conf import settings
+from scrapy.exceptions import DropItem
 
 class AllitebooksPipeline(object):
     def process_item(self, item, spider):
         return item
+class MongoDBPipleline(object):
+    def __init__(self):
+        connection = pymongo.MongoClient(
+            settings['MONGODB_SERVER'],
+            settings['MONGODB_PORT']
+        )
+        db = connection[settings['MONGODB_DB']]
+        self.connecton = db[settings['MONGODB_COLLECTION']]
+    def process_item(self, item, spider):
+        vaild = True
+        for data in item:
+            if not data:
+                vaild = False
+                raise DropItem("Missing {0}".format(data))
+        if vaild:
+            self.collection.insert(dict(item))
+            log.msg("Book Added to MongoDB Database", level=log.DEBUG, spider=spider)
 
 class AlliteebooksJsonPipeline(object):
     def open_spider(self, spider):

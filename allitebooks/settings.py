@@ -68,6 +68,10 @@ ITEM_PIPELINES = {
     'allitebooks.pipelines.AlliteebooksJsonPipeline': 300,
     # 'allitebooks.pipelines.AllitebooksPipeline': 300,
 }
+MONGODB_SERVER = "192.168.1.32"
+MONGODB_PORT = 27017
+MONGODB_DB = "allitebooks"
+MONGODB_COLLECTION = "Books"
 FILES_STORE = 'books'
 FEED_EXPORTERS = {
     'jsonlines': 'scrapy.exporters.JsonLinesItemExporter',
@@ -93,9 +97,9 @@ FEED_EXPORTERS = {
 # HTTPCACHE_IGNORE_HTTP_CODES = []
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 #MONGODB_SERVER =
-MONGODB_PORT = 27017
-MONGO_URI = "10.0.2.15"
-MONGO_DATABSE = "ebooks_items"
+#MONGODB_PORT = 27017
+#MONGO_URI = "10.0.2.15"
+#MONGO_DATABSE = "ebooks_items"
 
 EXTENSIONS ={
     'scrapy_jsonrpc.webservice.WebService': 500
